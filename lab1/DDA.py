@@ -1,15 +1,23 @@
 from OpenGL.GL import *
-from OpenGL.GLUT import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
-window = 0                                             # glut window number
-width, height = 1000, 1000                              # window size
+window = 0
+width, height = 500, 500
 start = [0, 0]
 end =[0, 0]
 
 def DDA():
-    dx = end[0] - start[1]
-    dy = end[1] - start[1]
+    if start[0] < end[0]:
+        dx = end[0] - start[0]
+        dy = end[1] - start[1]
+        x = start[0] 
+        y = start[1]
+    else:
+        dx = start[0] - end[0]
+        dy = start[1] - end[1]
+        x = end[0] 
+        y = end[1]
 
     if abs(dx) > abs(dy):
         steps = abs(dx)
@@ -19,10 +27,8 @@ def DDA():
     x_inc = dx / steps
     y_inc = dy / steps
 
-    x = start[0]
-    y = start[1]
 
-    glBegin(GL_LINES)
+    glBegin(GL_POINTS)
     for _ in range(steps):
         glVertex2f(round(x), round(y))
         x += x_inc
@@ -38,33 +44,34 @@ def refresh2d(width, height):
     glMatrixMode (GL_MODELVIEW)
     glLoadIdentity()
 
-def draw():                                            # ondraw is called all the time
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # clear the screen
-    glLoadIdentity()                                   # reset position
-                                     # reset position
-    refresh2d(width, height)                           # set mode to 2d
+def draw():                                            
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) 
+    glLoadIdentity()                                   
+    refresh2d(width, height)                          
        
-    glColor3f(0.0, 0.0, 1.0)                           # set color to blue
+    glColor3f(0.0, 0.0, 1.0)                           
     DDA()                       
       
    
-    glutSwapBuffers()                                  # important for double buffering
-   
+    glutSwapBuffers()                                  
 
-# initialization
+
 def main():
-    glutInit()                                             # initialize glut
+    glutInit()                                             
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
-    glutInitWindowSize(width, height)                      # set window size
-    glutInitWindowPosition(0, 0)                           # set window position
-    window = glutCreateWindow("Graphics Lab1 - DDA Line Algorithm")              # create window with title
-    glutDisplayFunc(draw)                                  # set draw function callback
-    glutIdleFunc(draw)                                     # draw all the time
+    glutInitWindowSize(width, height) 
+    glutInitWindowPosition(0, 0)
+    window = glutCreateWindow("Graphics Lab1 - DDA Line Algorithm")
+    glutDisplayFunc(draw)
+    glutIdleFunc(draw)
     glutMainLoop()   
 
 if __name__ == "__main__":
-    inp = input("Give start and end points in the format x1 y1 x2 y2 separated by space.")
-    points = inp.split()
-    start = [int(points[0]), int(points[1])]
-    end = [int(points[2]), int(points[3])]
+    print("Give the values of endpoints (x1, y1) and (x2, y2)")
+    x1 = input("x1 = ")
+    y1 = input("y1 = ")
+    x2 = input ("x2 = ")
+    y2 = input("y2 = ")
+    start = [int(x1), int(y1)]
+    end = [int(x2), int(y2)]
     main()
