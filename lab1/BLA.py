@@ -17,7 +17,7 @@ def BLA():
     else:
         x = end[0]
         y = end[1]
-        dx = start[0] - end[1]
+        dx = start[0] - end[0]
         dy = start[1] - end[1]
 
     if abs(dy) < abs(dx):   # Slope less than 1
