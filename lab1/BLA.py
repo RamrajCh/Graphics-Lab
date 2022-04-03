@@ -45,14 +45,15 @@ def BLA():
         p = c1 - dy
 
         glBegin(GL_POINTS)
+        glVertex2f(x, y)
         for _ in range(abs(dy)):
-            glVertex2f(x, y)
             if p < 0:
                 p += c1
             else:
                 p += c2
                 x += 1
             y += 1
+            glVertex2f(x, y)
         glEnd()
         glFlush()
 

@@ -29,10 +29,11 @@ def DDA():
 
 
     glBegin(GL_POINTS)
+    glVertex2f(round(x), round(y))
     for _ in range(steps):
-        glVertex2f(round(x), round(y))
         x += x_inc
         y += y_inc
+        glVertex2f(round(x), round(y))
     glEnd()
     glFlush()
 
