@@ -8,7 +8,7 @@ start = [0, 0]
 end =[0, 0]
 
 def BLA():
-    if start[0] < end[0]:
+    if start[0] <= end[0]:
         x = start[0]
         y = start[1]
         dx = end[0] - start[0]
@@ -27,14 +27,15 @@ def BLA():
         p = c1 - dx
 
         glBegin(GL_POINTS)
+        glVertex2f(x, y)
         for _ in range(abs(dx)):
-            glVertex2f(x, y)
             if p < 0:
                 p += c1
             else:
                 p += c2
                 y += 1
             x += 1
+            glVertex2f(x, y)
         glEnd()
         glFlush()
     
@@ -42,7 +43,7 @@ def BLA():
         c1 = 2 * abs(dx)
         c2 = 2 * (abs(dx) - abs(dy))
 
-        p = c1 - dy
+        p = c1 - abs(dy)
 
         glBegin(GL_POINTS)
         glVertex2f(x, y)
