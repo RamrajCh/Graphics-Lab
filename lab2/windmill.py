@@ -90,5 +90,5 @@ def main():
     glutMainLoop()   
 
 if __name__ == "__main__":
-    
+    print("Press s to rotate windmill.")
     main()
