@@ -1,3 +1,4 @@
+from itertools import count
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -7,46 +8,48 @@ from transformation2d import Transformtion2D
 window = 0 
 width, height = 600, 600
 
-theta = 10
+theta = 0
+speed = 0
 
 base = [[300, 450], [210, 50], [390, 50]]
-fin1 = [[300, 450], [450, 450], [375, 535]]
-fin2 = [[300, 450], [300, 600], [225, 525]]
-fin3 = [[300, 450], [150, 450], [225, 375]]
-fin4 = [[300, 450], [300, 300], [375, 375]]
+
+fin1 = [[300, 450], [275, 600], [325, 600]]
+
+
 
 def draw_polygon(vertexes):
-    glBegin(GL_POLYGON)
+    glBegin(GL_TRIANGLES)
     for v in vertexes:
         glVertex2f(v[0], v[1])
     glEnd()
 
 def draw_windmill():
+    global fin1
     glColor3f(0.3, 0.9, 0.3)
     glPointSize(2)
     draw_polygon(base)
     glColor3f(0.7, 0.2, 0.8)
     draw_polygon(fin1)
+    fin2 = rotate(fin1, 120)
+    fin3 = rotate(fin2, 120)
     draw_polygon(fin2)
     draw_polygon(fin3)
-    draw_polygon(fin4)
 
 def signals(key, x, y):
-    global theta
+    global speed, theta
     if key == b's':
-        theta += 10
-    rotate_fins()
+        speed = 1 if speed == 0 else 0
+    if key == b'd':
+        speed += 1
+    if key == b'a':
+        speed -= 1
+    theta = speed
     glutPostRedisplay()
 
 def rotate_fins():
-    A = rotate(fin1, theta)
-    B = rotate(fin2, theta)
-    C = rotate(fin3, theta)
-    D = rotate(fin4, theta)
-    draw_polygon(A)
-    draw_polygon(B)
-    draw_polygon(C)
-    draw_polygon(D)
+    global theta, fin1
+    fin1 = rotate(fin1, theta)
+    glutPostRedisplay()
 
 def rotate(vertexes, theta=90):
     t_vertexes = []
@@ -84,11 +87,12 @@ def main():
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
     glutInitWindowSize(width, height)
     glutInitWindowPosition(0, 0) 
-    window = glutCreateWindow("Graphics Lab1 - 2D transformation") 
+    window = glutCreateWindow("Graphics Lab1 - Windmill") 
     glutDisplayFunc(draw)
+    glutIdleFunc(rotate_fins)
     glutKeyboardFunc(signals)
     glutMainLoop()   
 
 if __name__ == "__main__":
-    print("Press s to rotate windmill.")
+    print("Commands:\n 's': start/stop windmill \n 'a': rotate fins clockwise, press repetedly to increase speed \n 'd': rotate fins anti-clockwise ")
     main()

@@ -39,7 +39,6 @@ class Transformtion2D(object):
 
 
 if __name__ == "__main__":
-    # T = Transformtion2D([[300, 450], [450, 450], [375, 525]])
-    T = Transformtion2D([[0, 0], [-150, 0], [-75, -75]])
-    print(T.rotation2d(90))
+    T = Transformtion2D([[0, 0], [1, 0], [0, 1], [1, 1]])
+    print(T.shear2d(2, 'X'))
    
